@@ -8,11 +8,17 @@ import android.opengl.GLSurfaceView;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
+	Triangle triangle;
+	Square square;
+	
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Called once to set up the view's OpenGL ES environment.
 		// set the background frame color
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		
+		triangle = new Triangle();
+		square = new Square();
 	}
 
 	@Override
