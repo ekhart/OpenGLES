@@ -23,6 +23,8 @@ public class Triangle {
 	// Set color with red, green, blue and aplha (opacity) values
 	float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
 	
+	private int mMVPMatrixHandle;
+	
 	public Triangle() {
 		// initialize vertex byte buffer for shape coordinates
 		ByteBuffer bb = ByteBuffer.allocateDirect(
@@ -47,7 +49,7 @@ public class Triangle {
 		GLES20.glLinkProgram(program);	// create opengl es program executables
 	}
 	
-	public void draw() {
+	public void draw(float[] mvpMatrix) {
 		// add program to opengl es enviroment
 		GLES20.glUseProgram(program);
 		
@@ -70,7 +72,13 @@ public class Triangle {
 		
 		//set color for drawing the triangle
 		GLES20.glUniform4fv(colorHandle, 1, color, 0);
-		
+				
+		//get handle to shape's transformation matrix
+		mMVPMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix");
+				
+		// pass the projection and view transformation to the shder
+		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+				
 		//draw the triangle
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
 		
